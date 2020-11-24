@@ -30,7 +30,12 @@ namespace UPFLoaderActionSpeed
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         {
-           
+          
+            /*
+             * TODO
+             * tighten and clean up
+             */
+
             
             //create hash set to hold mods we want
             var modKeySet = new HashSet<ModKey>();
