@@ -30,7 +30,7 @@ namespace UPFLoaderActionSpeed
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            
+           
             
             //create hash set to hold mods we want
             var modKeySet = new HashSet<ModKey>();
@@ -52,8 +52,6 @@ namespace UPFLoaderActionSpeed
 
         // got it, carrying on
         System.Console.WriteLine($"{mk} found! Loading...");
-
-
         
 
         //detect npc records in mods, adds mods containing those records to set

@@ -1,6 +1,6 @@
 {
   "Nickname": "UPFLoader - ActionSpeed",
-  "Visibility": "Exclude",
+  "Visibility": "Visible",
   "OneLineDescription": "Loader for ActionSpeed Skyrim UPF Patch",
   "LongDescription": "",
   "PreferredAutoVersioning": "Default"
