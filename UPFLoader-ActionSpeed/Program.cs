@@ -30,13 +30,15 @@ namespace UPFLoaderActionSpeed
 
         public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
         {
-          
+
             /*
-             * TODO
-             * tighten and clean up
+             TO DO:
+             * check if exceeding 254 plugin load and warn
+             * clean up, tighten up
+             * custom binarywrite, to flag output as esl and stop the dummy Synthesis.esp being created
              */
 
-            
+
             //create hash set to hold mods we want
             var modKeySet = new HashSet<ModKey>();
 
