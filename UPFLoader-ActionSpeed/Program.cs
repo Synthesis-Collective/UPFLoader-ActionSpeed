@@ -1,4 +1,3 @@
-using DynamicData;
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
@@ -6,18 +5,18 @@ using Noggog;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Wabbajack.Common;
 
 namespace UPFLoaderActionSpeed
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static Task<int> Main(string[] args)
         {
-            return SynthesisPipeline.Instance.Patch<ISkyrimMod, ISkyrimModGetter>(
-                args: args,
-                patcher: RunPatch,
-                userPreferences: new UserPreferences()
+            return SynthesisPipeline.Instance
+                .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
+                .Run(args, new RunPreferences()
                 {
                     ActionsForEmptyArgs = new RunDefaultPatcher()
                     {
@@ -28,7 +27,7 @@ namespace UPFLoaderActionSpeed
                 });
         }
 
-        public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
+        public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
 
             /*
@@ -65,7 +64,7 @@ namespace UPFLoaderActionSpeed
         foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
         {
             var modKey = npcGetter.FormKey.ModKey;
-            var linkedKeys = npcGetter.LinkFormKeys.Select(l => l.ModKey);
+            var linkedKeys = npcGetter.ContainedFormLinks.Select(l => l.FormKey.ModKey);
 
             //add keys to our hashset
             modKeySet.Add(modKey);
