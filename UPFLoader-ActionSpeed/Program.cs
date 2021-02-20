@@ -2,11 +2,11 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
 using Noggog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Wabbajack.Common;
 
 namespace UPFLoaderActionSpeed
 {
@@ -90,10 +90,12 @@ namespace UPFLoaderActionSpeed
             //shows total number of mods we're going to have as masters
             System.Console.WriteLine("\n" + "\n" + $"Adding {modKeySet.Count} masters to loader.");
 
-            System.Console.WriteLine("Finished" + "\n");
-
             //getting the Skyrim data path to dump our created HeartSeekerLoader.esp, will be co-opted by mod organizer anyhow
-            var dataPath = Path.Combine(GameRelease.SkyrimSE.ToWjGame().MetaData().GameLocation().ToString(), "Data");
+            if (!GameLocations.TryGetGameFolder(GameRelease.SkyrimSE, out var gamePath))
+            {
+                throw new ArgumentException("Game folder can not be located automatically");
+            }
+            var dataPath = Path.Combine(gamePath, "Data");
 
             //gets modkey from the load order
             var myLoadOrder = state.LoadOrder.Select(loadKey => loadKey.Key);
@@ -111,16 +113,16 @@ namespace UPFLoaderActionSpeed
             Path.Combine(dataPath, "ActionSpeedLoader.esp"),
             new BinaryWriteParameters()
             {
-            // Don't modify the content of the masters list with what records we have inside
-            MastersListContent = BinaryWriteParameters.MastersListContentOption.NoCheck,
+                // Don't modify the content of the masters list with what records we have inside
+                MastersListContent = BinaryWriteParameters.MastersListContentOption.NoCheck,
 
-            // Order the masters to match load order
-            //old load order getter config
-            MastersListOrdering = new BinaryWriteParameters.MastersListOrderingByLoadOrder(myLoadOrder),
-            //new mutagen 0.21.3, i've not got working yet
-            //MastersListOrdering = new BinaryWriteParameters.MastersListOrderingByLoadOrder(state.LoadOrder),
-            //Ignore default Synthesis.esp mod output name
-            ModKey = BinaryWriteParameters.ModKeyOption.NoCheck,
+                // Order the masters to match load order
+                //old load order getter config
+                MastersListOrdering = new BinaryWriteParameters.MastersListOrderingByLoadOrder(myLoadOrder),
+                //new mutagen 0.21.3, i've not got working yet
+                //MastersListOrdering = new BinaryWriteParameters.MastersListOrderingByLoadOrder(state.LoadOrder),
+                //Ignore default Synthesis.esp mod output name
+                ModKey = BinaryWriteParameters.ModKeyOption.NoCheck,
 
             });
         }
