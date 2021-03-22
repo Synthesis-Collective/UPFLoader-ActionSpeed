@@ -16,15 +16,8 @@ namespace UPFLoaderActionSpeed
         {
             return SynthesisPipeline.Instance
                 .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
-                .Run(args, new RunPreferences()
-                {
-                    ActionsForEmptyArgs = new RunDefaultPatcher()
-                    {
-                        IdentifyingModKey = "ActionSpeedLoader.esp",
-                        TargetRelease = GameRelease.SkyrimSE,
-                        BlockAutomaticExit = true,
-                    }
-                });
+                .SetTypicalOpen(GameRelease.SkyrimSE, "ActionSpeedLoader.esp")
+                .Run(args);
         }
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
@@ -72,7 +65,7 @@ namespace UPFLoaderActionSpeed
             }
 
             //make sure we get mods that make overrides to npc records
-            foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides(state.LinkCache))
+            foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
             {
                 //add keys to our hashset
                 modKeySet.Add(npcGetter.ModKey);
