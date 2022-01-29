@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Mutagen.Bethesda.Installs;
+using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Plugins.Binary.Parameters;
+using Mutagen.Bethesda.Plugins.Records;
 
 namespace UPFLoaderActionSpeed
 {
@@ -107,15 +111,15 @@ namespace UPFLoaderActionSpeed
             new BinaryWriteParameters()
             {
                 // Don't modify the content of the masters list with what records we have inside
-                MastersListContent = BinaryWriteParameters.MastersListContentOption.NoCheck,
+                MastersListContent = MastersListContentOption.NoCheck,
 
                 // Order the masters to match load order
                 //old load order getter config
-                MastersListOrdering = new BinaryWriteParameters.MastersListOrderingByLoadOrder(myLoadOrder),
+                MastersListOrdering = new MastersListOrderingByLoadOrder(myLoadOrder),
                 //new mutagen 0.21.3, i've not got working yet
                 //MastersListOrdering = new BinaryWriteParameters.MastersListOrderingByLoadOrder(state.LoadOrder),
                 //Ignore default Synthesis.esp mod output name
-                ModKey = BinaryWriteParameters.ModKeyOption.NoCheck,
+                ModKey = ModKeyOption.NoCheck,
 
             });
         }
